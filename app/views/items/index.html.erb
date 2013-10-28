@@ -14,7 +14,7 @@
   <tbody>
     <% @items.each do |item| %>
       <tr>
-        <td class='<%= "done" if item.done %>'><%= item.description %></td>
+        <td class='<%= (item.done ? "done" : "not-done") %>'><%= item.description %></td>
         <td><%= link_to 'Show', item %></td>
         <td><%= link_to 'Edit', edit_item_path(item) %></td>
         <td><%= link_to 'Toggle', item_toggle_path(item), method: :post, data: {confirm: 'Are you sure you want to mark as ' + (item.done ? 'not done' : 'done') + '?'} %></td>
