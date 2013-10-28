@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  description: Implement a new todo application
+  done: false
+
+two:
+  description: Delete a to do
+  done: false
