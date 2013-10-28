@@ -24,7 +24,8 @@ describe ItemsController do
   # Item. As you add validations to Item, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) { { "description" => "MyString" } }
-
+  let(:missing_description) { { "description" => "" } }
+  let(:unique_item) { { "description" => "Test 2" } } 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ItemsController. Be sure to keep this updated too.
@@ -94,6 +95,22 @@ describe ItemsController do
         Item.any_instance.stub(:save).and_return(false)
         post :create, {:item => { "description" => "invalid value" }}, valid_session
         response.should redirect_to('/')
+      end
+
+      it "sets the item in session" do
+         # Trigger the behavior that occurs when invalid params are submitted
+        Item.any_instance.stub(:save).and_return(false)
+        item = Item.new valid_attributes
+        post :create, {:item => valid_attributes }, valid_session
+        session[:item].description.should eql(item.description)
+        session[:item].done.should eql(item.done)
+      end
+
+      it "fails validation on duplicate items" do
+        item = Item.create! valid_attributes
+        Item.any_instance.stub(:save).and_return(false)
+        post :create, {:item => valid_attributes }, valid_session
+        assigns(:item).should_not be_valid
       end
     end
   end
