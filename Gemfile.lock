@@ -32,6 +32,7 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (>= 0.0.23)
+    capistrano-deploy (0.0.2)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
     coffee-rails (4.0.1)
@@ -142,6 +143,7 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano
+  capistrano-deploy
   capistrano-ext
   coffee-rails (~> 4.0.0)
   jbuilder (~> 1.2)
