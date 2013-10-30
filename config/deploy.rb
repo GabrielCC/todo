@@ -6,8 +6,8 @@ set :repo_url, 'https://github.com/GabrielCC/todo.git'
 set :deploy_to, '/var/www/todo/'
 set :scm, :git
 
- set :format, :pretty
- set :log_level, :debug
+set :format, :pretty
+set :log_level, :debug
 # set :pty, true
 
 # set :linked_files, %w{config/database.yml}
@@ -22,6 +22,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
+      system "mkdir -p #{release_path}/tmp"
       execute :touch, release_path.join('tmp/restart.txt')
     end
   end
@@ -30,7 +31,7 @@ namespace :deploy do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       within release_path do
-        execute :rake, 'cache:clear'
+        execute :rake, 'tmp:clear'
       end
     end
   end
@@ -47,5 +48,12 @@ task :check_write_permissions do
     else
       error "#{fetch(:deploy_to)} is not writable on #{host}"
     end
+  end
+end
+
+task :test do
+  on roles(:all) do |host|
+    set :rails_env, (fetch(:rails_env) || fetch(:stage))
+    info fetch(:rails_env)
   end
 end
